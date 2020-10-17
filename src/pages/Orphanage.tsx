@@ -4,8 +4,6 @@ import { FiClock, FiInfo } from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import {useParams} from 'react-router-dom';
 
-import mapMarkerImg from '../images/map-marker.svg';
-
 import '../styles/pages/orphanage.css';
 import SideBar from "../components/SideBar";
 import api from "../services/api";
@@ -35,7 +33,10 @@ export default function Orphanage() {
   const [activeImageIndex, setActiveImageIndex] = React.useState(0);
 
   useEffect(()=>{
-      api.get(`orfanatos/${params.id}`).then(response => {
+    const id = params.id;
+
+      api.get(`orfanatos/${id}`).then(response => {
+        console.log(response);
           setOrphanage(response.data);
       });
   }, [params.id]);
@@ -56,7 +57,6 @@ export default function Orphanage() {
           <div className="images">
             {images.map((image, index)=>{
               return(
-                console.log(image),
                 <button key={image.id} className={activeImageIndex === index ? 'active' : '' } type="button" onClick={()=>{setActiveImageIndex(index)}}>
                   <img src={image.url} alt={name} />
               </button>
@@ -93,7 +93,7 @@ export default function Orphanage() {
             <hr />
 
             <h2>Instruções para visita</h2>
-            <p>Venha como se sentir mais à vontade e traga muito amor para dar.</p>
+            <p>{instructions}</p>
 
             <div className="open-details">
               <div className="hour">
