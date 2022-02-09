@@ -1,8 +1,8 @@
 # Happy
 
-#### Projeto desenvolvido durante a 3ª NLW (10/2020)
+### Projeto desenvolvido durante a 3ª NLW (10/2020)
 
-### 💻 Tecnologias utilizadas:
+#### 💻 Tecnologias utilizadas:
 - ReactJS 
 - Axios (HTTP Requests)
 - 🗺 MapBox (API de Mapas)
