@@ -1,6 +1,6 @@
 # Happy
 
-### Projeto desenvolvido durante a 3ª NLW (10/2020)
+### Projeto desenvolvido durante a 3ª [NLW](https://nextlevelweek.com/) (10/2020)
 
 #### 💻 Tecnologias utilizadas:
 - ReactJS 
