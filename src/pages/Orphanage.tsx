@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
-import { FaWhatsapp } from "react-icons/fa";
-import { FiClock, FiInfo } from "react-icons/fi";
-import { Map, Marker, TileLayer } from "react-leaflet";
-import {useParams} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { FiClock, FiInfo } from 'react-icons/fi';
+import { Map, Marker, TileLayer } from 'react-leaflet';
+import { useParams } from 'react-router-dom';
 
 import '../styles/pages/orphanage.css';
-import SideBar from "../components/SideBar";
-import api from "../services/api";
-import mapIcon from "../utils/mapIcon";
+import SideBar from '../components/SideBar';
+import api from '../services/api';
+import mapIcon from '../utils/mapIcon';
 
-interface Orphanage{
+interface Orphanage {
   latitude: number;
   longitude: number;
   name: string;
@@ -23,70 +22,102 @@ interface Orphanage{
   }>;
 }
 
-interface OrphanageParams{
+interface OrphanageParams {
   id: string;
 }
 
 export default function Orphanage() {
   const params = useParams<OrphanageParams>();
-  const [orphanage, setOrphanage] = React.useState<Orphanage>();
-  const [activeImageIndex, setActiveImageIndex] = React.useState(0);
+  const [orphanage, setOrphanage] =
+    React.useState<Orphanage>();
+  const [activeImageIndex, setActiveImageIndex] =
+    React.useState(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     const id = params.id;
 
-      api.get(`orfanatos/${id}`).then(response => {
-        console.log(response);
-          setOrphanage(response.data);
-      });
+    api.get(`orfanatos/${id}`).then((response) => {
+      console.log(response);
+      setOrphanage(response.data);
+    });
   }, [params.id]);
 
-  if(!orphanage){
-    return <p>Carregando...</p>
+  if (!orphanage) {
+    return <p>Carregando...</p>;
   }
 
-  const { name, about, latitude, longitude, instructions, opening_hours, open_on_weekends, images} = orphanage;
+  const {
+    name,
+    about,
+    latitude,
+    longitude,
+    instructions,
+    opening_hours,
+    open_on_weekends,
+    images,
+  } = orphanage;
 
   return (
     <div id="page-orphanage">
-      <SideBar/>
+      <SideBar />
       <main>
         <div className="orphanage-details">
-          <img src={images[activeImageIndex].url} alt={name} />
+          <img
+            src={images[activeImageIndex].url}
+            alt={name}
+          />
 
           <div className="images">
-            {images.map((image, index)=>{
-              return(
-                <button key={image.id} className={activeImageIndex === index ? 'active' : '' } type="button" onClick={()=>{setActiveImageIndex(index)}}>
+            {images.map((image, index) => {
+              return (
+                <button
+                  key={image.id}
+                  className={
+                    activeImageIndex === index
+                      ? 'active'
+                      : ''
+                  }
+                  type="button"
+                  onClick={() => {
+                    setActiveImageIndex(index);
+                  }}>
                   <img src={image.url} alt={name} />
-              </button>
-              )
+                </button>
+              );
             })}
           </div>
-          
+
           <div className="orphanage-details-content">
             <h1>{name}</h1>
             <p>{about}</p>
 
             <div className="map-container">
-              <Map 
-                center={[latitude,longitude]} 
-                zoom={16} 
+              <Map
+                center={[latitude, longitude]}
+                zoom={16}
                 style={{ width: '100%', height: 280 }}
                 dragging={false}
                 touchZoom={false}
                 zoomControl={false}
                 scrollWheelZoom={false}
-                doubleClickZoom={false}
-              >
-                <TileLayer 
+                doubleClickZoom={false}>
+                <TileLayer
                   url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
-                <Marker interactive={false} icon={mapIcon} position={[latitude,longitude]} />
+                <Marker
+                  interactive={false}
+                  icon={mapIcon}
+                  position={[latitude, longitude]}
+                />
               </Map>
 
               <footer>
-                <a target="_blank" rel="noopener nooreferrer" href={`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`}>Ver rotas no Google Maps</a>
+                <a
+                  target="_blank"
+                  rel="noopener nooreferrer"
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`}>
+                  Ver rotas no Google Maps
+                </a>
               </footer>
             </div>
 
@@ -98,21 +129,21 @@ export default function Orphanage() {
             <div className="open-details">
               <div className="hour">
                 <FiClock size={32} color="#15B6D6" />
-               {opening_hours}
+                {opening_hours}
               </div>
-             {open_on_weekends ? (
+              {open_on_weekends ? (
                 <div className="open-on-weekends">
-                <FiInfo size={32} color="#39CC83" />
-                Atendemos <br />
-                fim de semana
-              </div>
-             ):(
-              <div className="open-on-weekends dont-open">
-              <FiInfo size={32} color="#FF669D" />
-              Não atendemos <br />
-              fim de semana
-            </div>
-             )}
+                  <FiInfo size={32} color="#39CC83" />
+                  Atendemos <br />
+                  fim de semana
+                </div>
+              ) : (
+                <div className="open-on-weekends dont-open">
+                  <FiInfo size={32} color="#FF669D" />
+                  Não atendemos <br />
+                  fim de semana
+                </div>
+              )}
             </div>
 
             {/* <button type="button" className="contact-button">
